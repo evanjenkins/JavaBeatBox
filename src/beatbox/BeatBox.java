@@ -20,6 +20,8 @@ public class BeatBox {
 	Sequence sequence;
 	Track track;
 	JFrame theFrame;
+	JLabel theTempo;
+	float theTempoInt;
 
 	String[] instrumentNames = {"Bass Drum", "Closed Hi-Hat", "Open Hi-Hat", "Acoustic Snare",
 		"Crash Cymbal", "Hand Clap", "High Tom", "Hi Bongo", "Maracas", "Whistle", "Low Conga",
@@ -60,6 +62,10 @@ public class BeatBox {
 		clearChecks.addActionListener(new MyClearChecksListener());
 		buttonBox.add(clearChecks);
 
+		theTempo = new JLabel("Tempo: 120");
+		// Doesn't currently work :(
+//		buttonBox.add(theTempo);
+
 		Box nameBox = new Box(BoxLayout.Y_AXIS);
 		for (int i = 0; i < 16; i++) {
 			nameBox.add(new Label(instrumentNames[i]));
@@ -72,7 +78,7 @@ public class BeatBox {
 
 		GridLayout grid = new GridLayout(16, 16);
 		grid.setVgap(1);
-		grid.setHgap(3);
+		grid.setHgap(2);
 		mainPanel = new JPanel(grid);
 		background.add(BorderLayout.CENTER, mainPanel);
 
@@ -132,6 +138,14 @@ public class BeatBox {
 		} catch (Exception e) {e.printStackTrace(); }
 	}
 
+	public float getTheTempo() {
+		return theTempoInt;
+	}
+
+	public void setTheTempo(float tempo) {
+		theTempoInt = tempo;
+	}
+
 	public class MyStartListener implements ActionListener {
 		public void actionPerformed(ActionEvent a) {
 			buildTrackAndStart();
@@ -148,6 +162,8 @@ public class BeatBox {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			float tempoFactor = sequencer.getTempoFactor();
+			setTheTempo(tempoFactor);
+			theTempo.setText("Tempo:" + Double.toString(getTheTempo() * 1.03));
 			sequencer.setTempoFactor((float) (tempoFactor * 1.03));
 		}
 	}
@@ -156,6 +172,8 @@ public class BeatBox {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			float tempoFactor = sequencer.getTempoFactor();
+			setTheTempo(tempoFactor);
+			theTempo.setText("Tempo:" + Double.toString(getTheTempo() * .97));
 			sequencer.setTempoFactor((float) (tempoFactor * .97));
 		}
 	}
@@ -166,6 +184,7 @@ public class BeatBox {
 				JCheckBox check = (JCheckBox) checkboxList.get(i);
 				if (check.isSelected()) check.setSelected(false);
 			}
+			sequencer.stop();
 		}
 	}
 
