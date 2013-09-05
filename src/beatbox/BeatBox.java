@@ -21,7 +21,7 @@ public class BeatBox {
 	Track track;
 	JFrame theFrame;
 	JLabel theTempo;
-	float theTempoInt;
+	float theTempoInt = 120;
 
 	String[] instrumentNames = {"Bass Drum", "Closed Hi-Hat", "Open Hi-Hat", "Acoustic Snare",
 		"Crash Cymbal", "Hand Clap", "High Tom", "Hi Bongo", "Maracas", "Whistle", "Low Conga",
@@ -62,9 +62,9 @@ public class BeatBox {
 		clearChecks.addActionListener(new MyClearChecksListener());
 		buttonBox.add(clearChecks);
 
-		theTempo = new JLabel("Tempo: 120");
+		theTempo = new JLabel("Tempo: " + getTheTempo());
 		// Doesn't currently work :(
-//		buttonBox.add(theTempo);
+		buttonBox.add(theTempo);
 
 		Box nameBox = new Box(BoxLayout.Y_AXIS);
 		for (int i = 0; i < 16; i++) {
@@ -139,7 +139,7 @@ public class BeatBox {
 	}
 
 	public float getTheTempo() {
-		return theTempoInt;
+		return Math.round(theTempoInt);
 	}
 
 	public void setTheTempo(float tempo) {
@@ -162,8 +162,8 @@ public class BeatBox {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			float tempoFactor = sequencer.getTempoFactor();
-			setTheTempo(tempoFactor);
-			theTempo.setText("Tempo:" + Double.toString(getTheTempo() * 1.03));
+			setTheTempo(Math.round(getTheTempo() * 1.03));
+			theTempo.setText("Tempo:" + Double.toString(getTheTempo()));
 			sequencer.setTempoFactor((float) (tempoFactor * 1.03));
 		}
 	}
@@ -172,8 +172,8 @@ public class BeatBox {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			float tempoFactor = sequencer.getTempoFactor();
-			setTheTempo(tempoFactor);
-			theTempo.setText("Tempo:" + Double.toString(getTheTempo() * .97));
+            setTheTempo(Math.round(getTheTempo() * .97));
+			theTempo.setText("Tempo:" + Double.toString(getTheTempo()));
 			sequencer.setTempoFactor((float) (tempoFactor * .97));
 		}
 	}
